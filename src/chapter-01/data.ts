@@ -1,4 +1,6 @@
-const plays = {
+import type { Plays } from "./type";
+
+const plays: Plays = {
   hamlet: { name: "Hamlet", type: "tragedy" },
   "as-like": {
     name: "As You Like It",

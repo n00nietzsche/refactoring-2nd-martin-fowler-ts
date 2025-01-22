@@ -17,7 +17,7 @@ export function statement(
   }).format;
 
   for (let aPerformance of invoice.performances) {
-    const play = playFor(aPerformance, plays);
+    const play = playFor(aPerformance);
 
     let thisAmount = amountFor(
       aPerformance,

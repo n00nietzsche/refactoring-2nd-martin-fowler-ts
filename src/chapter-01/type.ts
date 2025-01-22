@@ -3,6 +3,12 @@ export type Play = {
   type: string;
 };
 
+export type Plays = {
+  hamlet: Play;
+  "as-like": Play;
+  othello: Play;
+};
+
 export type Invoice = {
   customer: string;
   performances: {

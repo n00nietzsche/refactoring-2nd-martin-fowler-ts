@@ -1,4 +1,5 @@
-import type { Play, Performance } from "./type";
+import { plays } from "./data";
+import type { Performance, Plays } from "./type";
 
 /**
  * 공연 정보를 이용해 장르 정보를 찾는다.
@@ -7,8 +8,9 @@ import type { Play, Performance } from "./type";
  * @returns 장르 정보
  */
 export function playFor(
-  aPerformance: Performance,
-  plays: Record<string, Play>
+  aPerformance: Performance
 ) {
-  return plays[aPerformance.playID];
+  return plays[
+    aPerformance.playID as keyof Plays
+  ];
 }
