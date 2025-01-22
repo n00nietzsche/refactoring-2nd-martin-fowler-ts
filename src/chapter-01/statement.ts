@@ -1,4 +1,5 @@
 import { amountFor } from "./amount-for";
+import { playFor } from "./play-for";
 import type { Invoice, Play } from "./type";
 
 export function statement(
@@ -16,7 +17,8 @@ export function statement(
   }).format;
 
   for (let aPerformance of invoice.performances) {
-    const play = plays[aPerformance.playID];
+    const play = playFor(aPerformance, plays);
+
     let thisAmount = amountFor(
       aPerformance,
       play
