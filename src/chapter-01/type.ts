@@ -10,3 +10,8 @@ export type Invoice = {
     audience: number;
   }[];
 };
+
+export type Performance = {
+  playID: string;
+  audience: number;
+};
