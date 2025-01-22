@@ -11,28 +11,27 @@ export function amountFor(
   perf: Performance,
   play: Play
 ) {
-  let thisAmount = 0;
+  let result = 0;
 
   switch (play.type) {
     case "tragedy":
-      thisAmount = 40_000;
+      result = 40_000;
 
       if (perf.audience > 30) {
-        thisAmount +=
-          1_000 * (perf.audience - 30);
+        result += 1_000 * (perf.audience - 30);
       }
 
       break;
 
     case "comedy":
-      thisAmount = 30_000;
+      result = 30_000;
 
       if (perf.audience > 20) {
-        thisAmount +=
+        result +=
           10_000 + 500 * (perf.audience - 20);
       }
 
-      thisAmount += 300 * perf.audience;
+      result += 300 * perf.audience;
       break;
 
     default:
@@ -41,5 +40,5 @@ export function amountFor(
       );
   }
 
-  return thisAmount;
+  return result;
 }
