@@ -95,6 +95,19 @@ class PerformanceCalculator {
 
     return result;
   }
+
+  get volumeCredits() {
+    let result = 0;
+
+    result += Math.max(this.performance.audience - 30, 0);
+
+    // 희극 관객 5명마다 추가 포인트를 제공한다.
+    if ('comedy' === this.play.type) {
+      result += Math.floor(this.performance.audience / 5);
+    }
+
+    return result;
+  }
 }
 
 function enrichPerformance(aPerformance: Performance) {
@@ -105,7 +118,7 @@ function enrichPerformance(aPerformance: Performance) {
     ...result,
     play: playFor(result),
     amount: calculator.amount,
-    volumeCredits: volumeCreditsFor(result),
+    volumeCredits: calculator.volumeCredits,
   };
 }
 
@@ -145,18 +158,6 @@ function usd(aNumber: number) {
     currency: 'USD',
     maximumFractionDigits: 2,
   }).format(aNumber);
-}
-
-function volumeCreditsFor(aPerformance: Performance) {
-  let result = 0;
-
-  result += Math.max(aPerformance.audience - 30, 0);
-
-  // 희극 관객 5명마다 추가 포인트를 제공한다.
-  if ('comedy' === playFor(aPerformance).type) {
-    result += Math.floor(aPerformance.audience / 5);
-  }
-  return result;
 }
 
 /**
