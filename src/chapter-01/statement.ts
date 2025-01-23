@@ -3,6 +3,8 @@ import type { Invoice, Play, Performance, Plays } from './type';
 
 type EnrichedPerformance = Performance & {
   play: Play;
+  amount: number;
+  volumeCredits: number;
 };
 
 type StatementData = {
@@ -31,6 +33,8 @@ function enrichPerformance(aPerformance: Performance) {
   return {
     ...result,
     play: playFor(result),
+    amount: amountFor(result, playFor(result)),
+    volumeCredits: volumeCreditsFor(result),
   };
 }
 
@@ -39,7 +43,7 @@ function renderPlainText(data: StatementData) {
 
   for (let perf of data.performances) {
     // 청구 내역을 출력한다.
-    result += `${perf.play.name}: ${usd(amountFor(perf, perf.play) / 100)} ${
+    result += `${perf.play.name}: ${usd(perf.amount / 100)} ${
       perf.audience
     }석\n`;
   }
@@ -50,20 +54,20 @@ function renderPlainText(data: StatementData) {
   return result;
 }
 
-function totalAmount(invoice: Invoice) {
+function totalAmount(data: StatementData) {
   let totalAmount = 0;
 
-  for (let aPerformance of invoice.performances) {
-    totalAmount += amountFor(aPerformance, playFor(aPerformance));
+  for (let aPerformance of data.performances) {
+    totalAmount += aPerformance.amount;
   }
   return totalAmount;
 }
 
-function totalVolumeCredits(invoice: Invoice) {
+function totalVolumeCredits(data: StatementData) {
   let volumeCredits = 0;
 
-  for (let aPerformance of invoice.performances) {
-    volumeCredits += volumeCreditsFor(aPerformance);
+  for (let aPerformance of data.performances) {
+    volumeCredits += aPerformance.volumeCredits;
   }
   return volumeCredits;
 }
