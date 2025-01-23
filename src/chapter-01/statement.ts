@@ -59,9 +59,11 @@ function createStatementData(invoice: Invoice) {
 
 class PerformanceCalculator {
   performance: Performance;
+  play: Play;
 
-  constructor(private aPerformance: Performance) {
+  constructor(aPerformance: Performance) {
     this.performance = aPerformance;
+    this.play = playFor(aPerformance);
   }
 }
 
