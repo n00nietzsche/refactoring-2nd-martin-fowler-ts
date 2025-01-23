@@ -62,21 +62,17 @@ function renderPlainText(data: StatementData) {
 }
 
 function totalAmount(data: StatementData) {
-  let totalAmount = 0;
-
-  for (let aPerformance of data.performances) {
-    totalAmount += aPerformance.amount;
-  }
-  return totalAmount;
+  return data.performances.reduce(
+    (total, aPerformance) => total + aPerformance.amount,
+    0
+  );
 }
 
 function totalVolumeCredits(data: StatementData) {
-  let volumeCredits = 0;
-
-  for (let aPerformance of data.performances) {
-    volumeCredits += aPerformance.volumeCredits;
-  }
-  return volumeCredits;
+  return data.performances.reduce(
+    (total, aPerformance) => total + aPerformance.volumeCredits,
+    0
+  );
 }
 
 function usd(aNumber: number) {
