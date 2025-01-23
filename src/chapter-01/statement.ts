@@ -1,22 +1,51 @@
 import { plays } from './data';
 import type { Invoice, Play, Performance, Plays } from './type';
 
+type EnrichedPerformance = Performance & {
+  play: Play;
+};
+
+type StatementData = {
+  customer: string;
+  performances: EnrichedPerformance[];
+};
+
 export function statement(invoice: Invoice) {
-  return renderPlainText(invoice);
+  const statementData = getStatementData(invoice);
+
+  return renderPlainText(statementData);
 }
 
-function renderPlainText(invoice: Invoice) {
-  let result = `청구내역 (고객명: ${invoice.customer})\n`;
+function getStatementData(invoice: Invoice) {
+  const statementData: StatementData = {
+    customer: invoice.customer,
+    performances: invoice.performances.map(enrichPerformance),
+  };
 
-  for (let perf of invoice.performances) {
+  return statementData;
+}
+
+function enrichPerformance(aPerformance: Performance) {
+  const result = Object.assign({}, aPerformance);
+
+  return {
+    ...result,
+    play: playFor(result),
+  };
+}
+
+function renderPlainText(data: StatementData) {
+  let result = `청구내역 (고객명: ${data.customer})\n`;
+
+  for (let perf of data.performances) {
     // 청구 내역을 출력한다.
-    result += `${playFor(perf).name}: ${usd(
-      amountFor(perf, playFor(perf)) / 100
-    )} ${perf.audience}석\n`;
+    result += `${perf.play.name}: ${usd(amountFor(perf, perf.play) / 100)} ${
+      perf.audience
+    }석\n`;
   }
 
-  result += `총액 ${usd(totalAmount(invoice) / 100)}\n`;
-  result += `적립 포인트 ${totalVolumeCredits(invoice)}점\n`;
+  result += `총액 ${usd(totalAmount(data) / 100)}\n`;
+  result += `적립 포인트 ${totalVolumeCredits(data)}점\n`;
 
   return result;
 }
