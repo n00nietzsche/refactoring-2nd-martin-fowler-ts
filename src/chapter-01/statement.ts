@@ -1,7 +1,11 @@
 import { plays } from './data';
 import type { Invoice, Play, Performance, Plays } from './type';
 
-export function statement(invoice: Invoice, plays: Record<string, Play>) {
+export function statement(invoice: Invoice) {
+  return renderPlainText(invoice);
+}
+
+function renderPlainText(invoice: Invoice) {
   let result = `청구내역 (고객명: ${invoice.customer})\n`;
 
   for (let perf of invoice.performances) {
