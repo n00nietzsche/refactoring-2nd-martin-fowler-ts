@@ -6,8 +6,6 @@ export function statement(
   invoice: Invoice,
   plays: Record<string, Play>
 ) {
-  let totalAmount = 0;
-
   let result = `청구내역 (고객명: ${invoice.customer})\n`;
 
   for (let aPerformance of invoice.performances) {
@@ -18,16 +16,24 @@ export function statement(
       playFor(aPerformance)
     ) / 100
     )} ${aPerformance.audience}석\n`;
+  }
+
+  result += `총액 ${usd(totalAmount(invoice) / 100)}\n`;
+  result += `적립 포인트 ${totalVolumeCredits(invoice)}점\n`;
+
+  return result;
+}
+
+function totalAmount(invoice: Invoice) {
+  let totalAmount = 0;
+
+  for (let aPerformance of invoice.performances) {
     totalAmount += amountFor(
       aPerformance,
       playFor(aPerformance)
     );
   }
-
-  result += `총액 ${usd(totalAmount / 100)}\n`;
-  result += `적립 포인트 ${totalVolumeCredits(invoice)}점\n`;
-
-  return result;
+  return totalAmount;
 }
 
 function totalVolumeCredits(invoice: Invoice) {
