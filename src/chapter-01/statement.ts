@@ -110,8 +110,21 @@ class PerformanceCalculator {
   }
 }
 
+class TragedyCalculator extends PerformanceCalculator {}
+
+class ComedyCalculator extends PerformanceCalculator {}
+
 function createPerformanceCalculator(aPerformance: Performance) {
-  return new PerformanceCalculator(aPerformance);
+  const calculator = new PerformanceCalculator(aPerformance);
+
+  switch (calculator.play.type) {
+    case 'tragedy':
+      return new TragedyCalculator(aPerformance);
+    case 'comedy':
+      return new ComedyCalculator(aPerformance);
+    default:
+      throw new Error(`알 수 없는 장르: ${calculator.play.type}`);
+  }
 }
 
 function enrichPerformance(aPerformance: Performance) {
@@ -120,7 +133,7 @@ function enrichPerformance(aPerformance: Performance) {
 
   return {
     ...result,
-    play: playFor(result),
+    play: calculator.play,
     amount: calculator.amount,
     volumeCredits: calculator.volumeCredits,
   };
