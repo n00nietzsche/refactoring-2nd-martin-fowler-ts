@@ -15,7 +15,7 @@ export function statement(
     volumeCredits += volumeCreditsFor(aPerformance);
 
     // 청구 내역을 출력한다.
-    result += `${playFor(aPerformance).name}: ${format(
+    result += `${playFor(aPerformance).name}: ${usd(
       amountFor(
       aPerformance,
       playFor(aPerformance)
@@ -27,13 +27,13 @@ export function statement(
     );
   }
 
-  result += `총액 ${format(totalAmount / 100)}\n`;
+  result += `총액 ${usd(totalAmount / 100)}\n`;
   result += `적립 포인트 ${volumeCredits}점\n`;
 
   return result;
 }
 
-function format(aNumber: number) {
+function usd(aNumber: number) {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
