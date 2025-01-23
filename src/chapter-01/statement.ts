@@ -1,6 +1,6 @@
 import { amountFor } from "./amount-for";
 import { playFor } from "./play-for";
-import type { Invoice, Play } from "./type";
+import type { Invoice, Play, Performance } from "./type";
 
 export function statement(
   invoice: Invoice,
@@ -18,17 +18,7 @@ export function statement(
 
   for (let aPerformance of invoice.performances) {
     // 포인트를 적립한다.
-    volumeCredits += Math.max(
-      aPerformance.audience - 30,
-      0
-    );
-
-    // 희극 관객 5명마다 추가 포인트를 제공한다.
-    if ("comedy" === playFor(aPerformance).type) {
-      volumeCredits += Math.floor(
-        aPerformance.audience / 5
-      );
-    }
+    volumeCredits += volumeCreditsFor(aPerformance);
 
     // 청구 내역을 출력한다.
     result += `${playFor(aPerformance).name}: ${format(
@@ -48,3 +38,21 @@ export function statement(
 
   return result;
 }
+
+function volumeCreditsFor(aPerformance: Performance) {
+  let volumeCredits = 0;
+
+  volumeCredits += Math.max(
+    aPerformance.audience - 30,
+    0
+  );
+
+  // 희극 관객 5명마다 추가 포인트를 제공한다.
+  if ("comedy" === playFor(aPerformance).type) {
+    volumeCredits += Math.floor(
+      aPerformance.audience / 5
+    );
+  }
+  return volumeCredits;
+}
+
