@@ -4,11 +4,11 @@ import type { Invoice, Play, Performance, Plays } from './type';
 export function statement(invoice: Invoice, plays: Record<string, Play>) {
   let result = `청구내역 (고객명: ${invoice.customer})\n`;
 
-  for (let aPerformance of invoice.performances) {
+  for (let perf of invoice.performances) {
     // 청구 내역을 출력한다.
-    result += `${playFor(aPerformance).name}: ${usd(
-      amountFor(aPerformance, playFor(aPerformance)) / 100
-    )} ${aPerformance.audience}석\n`;
+    result += `${playFor(perf).name}: ${usd(
+      amountFor(perf, playFor(perf)) / 100
+    )} ${perf.audience}석\n`;
   }
 
   result += `총액 ${usd(totalAmount(invoice) / 100)}\n`;
