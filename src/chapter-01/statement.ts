@@ -40,19 +40,19 @@ export function statement(
 }
 
 function volumeCreditsFor(aPerformance: Performance) {
-  let volumeCredits = 0;
+  let result = 0;
 
-  volumeCredits += Math.max(
+  result += Math.max(
     aPerformance.audience - 30,
     0
   );
 
   // 희극 관객 5명마다 추가 포인트를 제공한다.
   if ("comedy" === playFor(aPerformance).type) {
-    volumeCredits += Math.floor(
+    result += Math.floor(
       aPerformance.audience / 5
     );
   }
-  return volumeCredits;
+  return result;
 }
 
