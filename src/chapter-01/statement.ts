@@ -1,19 +1,13 @@
-import { plays } from "./data";
-import type { Invoice, Play, Performance, Plays } from "./type";
+import { plays } from './data';
+import type { Invoice, Play, Performance, Plays } from './type';
 
-export function statement(
-  invoice: Invoice,
-  plays: Record<string, Play>
-) {
+export function statement(invoice: Invoice, plays: Record<string, Play>) {
   let result = `청구내역 (고객명: ${invoice.customer})\n`;
 
   for (let aPerformance of invoice.performances) {
     // 청구 내역을 출력한다.
     result += `${playFor(aPerformance).name}: ${usd(
-      amountFor(
-      aPerformance,
-      playFor(aPerformance)
-    ) / 100
+      amountFor(aPerformance, playFor(aPerformance)) / 100
     )} ${aPerformance.audience}석\n`;
   }
 
@@ -27,10 +21,7 @@ function totalAmount(invoice: Invoice) {
   let totalAmount = 0;
 
   for (let aPerformance of invoice.performances) {
-    totalAmount += amountFor(
-      aPerformance,
-      playFor(aPerformance)
-    );
+    totalAmount += amountFor(aPerformance, playFor(aPerformance));
   }
   return totalAmount;
 }
@@ -45,9 +36,9 @@ function totalVolumeCredits(invoice: Invoice) {
 }
 
 function usd(aNumber: number) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
     maximumFractionDigits: 2,
   }).format(aNumber);
 }
@@ -55,16 +46,11 @@ function usd(aNumber: number) {
 function volumeCreditsFor(aPerformance: Performance) {
   let result = 0;
 
-  result += Math.max(
-    aPerformance.audience - 30,
-    0
-  );
+  result += Math.max(aPerformance.audience - 30, 0);
 
   // 희극 관객 5명마다 추가 포인트를 제공한다.
-  if ("comedy" === playFor(aPerformance).type) {
-    result += Math.floor(
-      aPerformance.audience / 5
-    );
+  if ('comedy' === playFor(aPerformance).type) {
+    result += Math.floor(aPerformance.audience / 5);
   }
   return result;
 }
@@ -75,12 +61,8 @@ function volumeCreditsFor(aPerformance: Performance) {
  * @param plays 장르 정보
  * @returns 장르 정보
  */
-function playFor(
-  aPerformance: Performance
-) {
-  return plays[
-    aPerformance.playID as keyof Plays
-  ];
+function playFor(aPerformance: Performance) {
+  return plays[aPerformance.playID as keyof Plays];
 }
 
 /**
@@ -90,39 +72,31 @@ function playFor(
  * @param play 장르 정보 (장르 이용)
  * @returns 총액
  */
-function amountFor(
-  aPerformance: Performance,
-  play: Play
-) {
+function amountFor(aPerformance: Performance, play: Play) {
   let result = 0;
 
   switch (play.type) {
-    case "tragedy":
+    case 'tragedy':
       result = 40_000;
 
       if (aPerformance.audience > 30) {
-        result +=
-          1_000 * (aPerformance.audience - 30);
+        result += 1_000 * (aPerformance.audience - 30);
       }
 
       break;
 
-    case "comedy":
+    case 'comedy':
       result = 30_000;
 
       if (aPerformance.audience > 20) {
-        result +=
-          10_000 +
-          500 * (aPerformance.audience - 20);
+        result += 10_000 + 500 * (aPerformance.audience - 20);
       }
 
       result += 300 * aPerformance.audience;
       break;
 
     default:
-      throw new Error(
-        `알 수 없는 장르: ${play.type}`
-      );
+      throw new Error(`알 수 없는 장르: ${play.type}`);
   }
 
   return result;
