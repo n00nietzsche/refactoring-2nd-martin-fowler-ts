@@ -10,12 +10,6 @@ export function statement(
   let volumeCredits = 0;
   let result = `청구내역 (고객명: ${invoice.customer})\n`;
 
-  const format = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    maximumFractionDigits: 2,
-  }).format;
-
   for (let aPerformance of invoice.performances) {
     // 포인트를 적립한다.
     volumeCredits += volumeCreditsFor(aPerformance);
@@ -37,6 +31,14 @@ export function statement(
   result += `적립 포인트 ${volumeCredits}점\n`;
 
   return result;
+}
+
+function format(aNumber: number) {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 2,
+  }).format(aNumber);
 }
 
 function volumeCreditsFor(aPerformance: Performance) {
