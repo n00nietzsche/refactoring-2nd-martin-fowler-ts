@@ -15,12 +15,12 @@ type StatementData = {
 };
 
 export function statement(invoice: Invoice) {
-  const statementData = getStatementData(invoice);
+  const statementData = createStatementData(invoice);
 
   return renderPlainText(statementData);
 }
 
-function getStatementData(invoice: Invoice) {
+function createStatementData(invoice: Invoice) {
   const statementData: StatementData = {
     customer: invoice.customer,
     performances: invoice.performances.map(enrichPerformance),
