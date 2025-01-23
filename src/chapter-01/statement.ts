@@ -20,6 +20,29 @@ export function statement(invoice: Invoice) {
   return renderPlainText(statementData);
 }
 
+export function htmlStatement(invoice: Invoice) {
+  return renderHtml(createStatementData(invoice));
+}
+
+function renderHtml(data: StatementData) {
+  let result = `<h1>청구내역 (고객명: ${data.customer})</h1>\n`;
+
+  result += '<table>\n';
+  result += '<tr><th>연극</th><th>좌석 수</th><th>금액</th></tr>\n';
+
+  for (let perf of data.performances) {
+    result += `<tr><td>${perf.play.name}</td><td>${perf.audience}</td><td>${usd(
+      perf.amount
+    )}</td></tr>\n`;
+  }
+
+  result += '</table>\n';
+  result += `<p>총액: <em>${usd(data.totalAmount / 100)}</em></p>\n`;
+  result += `<p>적립 포인트: <em>${data.totalVolumeCredits}</em></p>\n`;
+
+  return result;
+}
+
 function createStatementData(invoice: Invoice) {
   const statementData: StatementData = {
     customer: invoice.customer,
