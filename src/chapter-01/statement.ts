@@ -110,8 +110,12 @@ class PerformanceCalculator {
   }
 }
 
+function createPerformanceCalculator(aPerformance: Performance) {
+  return new PerformanceCalculator(aPerformance);
+}
+
 function enrichPerformance(aPerformance: Performance) {
-  const calculator = new PerformanceCalculator(aPerformance);
+  const calculator = createPerformanceCalculator(aPerformance);
   const result = Object.assign({}, aPerformance);
 
   return {
