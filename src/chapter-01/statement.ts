@@ -57,7 +57,16 @@ function createStatementData(invoice: Invoice) {
   return statementData;
 }
 
+class PerformanceCalculator {
+  performance: Performance;
+
+  constructor(private aPerformance: Performance) {
+    this.performance = aPerformance;
+  }
+}
+
 function enrichPerformance(aPerformance: Performance) {
+  const calculator = new PerformanceCalculator(aPerformance);
   const result = Object.assign({}, aPerformance);
 
   return {
