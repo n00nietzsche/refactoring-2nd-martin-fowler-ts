@@ -10,6 +10,8 @@ type EnrichedPerformance = Performance & {
 type StatementData = {
   customer: string;
   performances: EnrichedPerformance[];
+  totalAmount: number;
+  totalVolumeCredits: number;
 };
 
 export function statement(invoice: Invoice) {
@@ -22,7 +24,12 @@ function getStatementData(invoice: Invoice) {
   const statementData: StatementData = {
     customer: invoice.customer,
     performances: invoice.performances.map(enrichPerformance),
+    totalAmount: 0,
+    totalVolumeCredits: 0,
   };
+
+  statementData.totalAmount = totalAmount(statementData);
+  statementData.totalVolumeCredits = totalVolumeCredits(statementData);
 
   return statementData;
 }
@@ -48,8 +55,8 @@ function renderPlainText(data: StatementData) {
     }석\n`;
   }
 
-  result += `총액 ${usd(totalAmount(data) / 100)}\n`;
-  result += `적립 포인트 ${totalVolumeCredits(data)}점\n`;
+  result += `총액 ${usd(data.totalAmount / 100)}\n`;
+  result += `적립 포인트 ${data.totalVolumeCredits}점\n`;
 
   return result;
 }
