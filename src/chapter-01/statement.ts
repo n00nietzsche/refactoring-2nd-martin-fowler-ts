@@ -80,11 +80,7 @@ class PerformanceCalculator {
   }
 
   get volumeCredits() {
-    let result = 0;
-
-    result += Math.max(this.performance.audience - 30, 0);
-
-    return result;
+    return Math.max(this.performance.audience - 30, 0);
   }
 }
 
